@@ -6,5 +6,9 @@ app = FastAPI()
 
 db_connection()
 
+@app.get("/")
+def read_root():
+    return {"message": "Container is running successfully!"}
+
 app.include_router(auth_router, prefix="/auth")
 app.include_router(task_router, prefix="/task")

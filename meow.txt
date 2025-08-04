@@ -3,3 +3,4 @@ alembic init alembic
 alembic revision --autogenerate -m "initial users and tasks tables"
 alembic upgrade heads
 pip install python-jose passlib[bcrypt] python-dotenv
+pip freeze > requirements.txt
