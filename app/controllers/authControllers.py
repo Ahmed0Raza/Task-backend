@@ -5,10 +5,7 @@ from app.tables.user import User
 from app.schemas.auth import SignupModel, LoginModel
 from passlib.hash import bcrypt
 from jose import jwt
-import os
-
-JWT_SECRET = os.getenv("JWT_SECRET", "your_jwt_secret")
-JWT_EXPIRATION_SECONDS = 60 * 60 * 24  # 1 day
+from app.config.settings import settings  
 
 def signup(data: SignupModel, db: Session = Depends(get_db)):
     existing_user = db.query(User).filter(User.email == data.email).first()
@@ -27,7 +24,11 @@ def signup(data: SignupModel, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_user)
 
-    token = jwt.encode({"id": new_user.id, "email": new_user.email}, JWT_SECRET, algorithm="HS256")
+    token = jwt.encode(
+        {"id": new_user.id, "email": new_user.email},
+        settings.JWT_SECRET,
+        algorithm="HS256"
+    )
 
     return {"token": token}
 
@@ -36,6 +37,10 @@ def login(data: LoginModel, db: Session = Depends(get_db)):
     if not user or not bcrypt.verify(data.password, user.password):
         raise HTTPException(status_code=400, detail="Invalid credentials")
 
-    token = jwt.encode({"id": user.id, "email": user.email}, JWT_SECRET, algorithm="HS256")
+    token = jwt.encode(
+        {"id": user.id, "email": user.email},
+        settings.JWT_SECRET,
+        algorithm="HS256"
+    )
 
     return {"token": token}

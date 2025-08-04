@@ -2,8 +2,7 @@ import os
 from fastapi import Request, HTTPException, status
 from jose import jwt, JWTError
 from app.tables import SessionLocal
-
-JWT_SECRET = os.getenv("JWT_SECRET", "your_jwt_secret")
+from app.config.settings import settings  
 
 def get_db():
     db = SessionLocal()
@@ -19,7 +18,7 @@ async def verify_token(request: Request):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="No token provided.")
 
     try:
-        payload = jwt.decode(auth_header, JWT_SECRET, algorithms=["HS256"])
+        payload = jwt.decode(auth_header, settings.JWT_SECRET, algorithms=["HS256"])
         return payload  # 👈 Must include user_id in payload at token creation
     except JWTError as e:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail=f"Invalid token: {str(e)}")
