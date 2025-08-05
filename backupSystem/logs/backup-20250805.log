@@ -349,3 +349,84 @@
 [20250805 20:07:00] 🔄 Archiving /dbdata...
 [20250805 20:07:00] ✅ Backup completed.
 [20250805 20:07:00] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:05:39] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:05:39] 🔄 Archiving /dbdata...
+[20250805 21:05:39] ✅ Backup completed.
+[20250805 21:05:39] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:13:19] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:13:19] 🔄 Archiving /dbdata...
+[20250805 21:13:19] ✅ Backup completed.
+[20250805 21:13:19] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:21:55] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:21:55] 🔄 Archiving /dbdata...
+[20250805 21:21:55] ✅ Backup completed.
+[20250805 21:21:55] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:32:26] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:32:26] 🔄 Archiving /dbdata...
+[20250805 21:32:26] ✅ Backup completed.
+[20250805 21:32:26] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:34:51] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:34:51] 🔄 Archiving /dbdata...
+[20250805 21:34:51] ✅ Backup completed.
+[20250805 21:34:51] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:38:26] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:38:26] 🔄 Archiving /dbdata...
+[20250805 21:38:26] ✅ Backup completed.
+[20250805 21:38:26] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:40:29] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:40:29] 🔄 Archiving /dbdata...
+[20250805 21:40:29] ✅ Backup completed.
+[20250805 21:40:29] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:41:00] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:41:00] 🔄 Archiving /dbdata...
+[20250805 21:41:00] ✅ Backup completed.
+[20250805 21:41:00] ✅ Backup script completed successfully.
+--------------------------------------------------
+[20250805 21:42:00] 🗃️  Starting Backup
+--------------------------------------------------
+📂 Target Directory : /dbdata
+📦 Backup Destination: /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+
+[20250805 21:42:00] 🔄 Archiving /dbdata...
+[20250805 21:42:00] ✅ Backup completed.
+[20250805 21:42:00] ✅ Backup script completed successfully.
