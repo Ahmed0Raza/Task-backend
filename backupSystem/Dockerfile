@@ -1,22 +1,22 @@
 FROM alpine:latest
 
-# Install required packages
-RUN apk add --no-cache bash rsync busybox-suid
+# Install required packages: bash, rsync, crond, git, openssh
+RUN apk add --no-cache bash rsync busybox-suid git openssh
 
-# Set working directory
 WORKDIR /app
 
-# Copy backup script and cronjob file
+# Copy your backup script and make it executable
 COPY search_backup.sh .
-COPY cronjob.txt .
-
-# Ensure the backup script is executable
 RUN chmod +x search_backup.sh
 
-# Create log directory and empty log file
-RUN mkdir -p /var/log && touch /var/log/cron.log && chmod 666 /var/log/cron.log
+# Copy cron job definition
+COPY cronjob.txt .
 
-# Install the cron job
+# Set up crontab
 RUN crontab cronjob.txt
 
-# Start cron in the foreground when the container runs
+# Ensure log directories exist
+RUN mkdir -p /var/log /app/logs /app/backups /app/reports
+
+# Start backup immediately and run crond
+CMD ["sh", "-c", "./search_backup.sh -d /dbdata -i -r && crond -f -l 8"]

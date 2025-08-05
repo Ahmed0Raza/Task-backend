@@ -74,3 +74,37 @@ fi
 
 # === DONE ===
 echo "[${DATE} ${TIME}] ✅ Backup script completed successfully." >> "$LOG_FILE"
+
+## === GIT BACKUP PUSH ===
+
+# Start ssh-agent and add key
+eval "$(ssh-agent -s)"
+ssh-add /root/.ssh/id_backup_ed25519
+
+# ✅ Add GitHub to known_hosts to avoid trust errors
+mkdir -p ~/.ssh
+ssh-keyscan github.com >> ~/.ssh/known_hosts
+
+# Clone the repo shallowly into temp folder
+cd /tmp
+git clone --depth=1 git@github.com:Ahmed0Raza/Task-backend.git repo
+cd repo
+
+# Configure Git
+git config user.name "BackupBot"
+git config user.email "imahmedraza4626@gmail.com"
+
+# Copy the backup files
+cp -r /app/backups /app/logs /app/reports .
+
+# Commit and tag
+git add backups logs reports
+COMMIT_MSG="🗃️ Backup: $DATE $TIME"
+git commit -m "$COMMIT_MSG" || echo "⚠️ Nothing to commit"
+
+TAG_NAME="backup-$DATE-$(echo $TIME | tr ':' '-')"
+git tag -a "$TAG_NAME" -m "Backup taken on $DATE at $TIME"
+
+# Push
+git push origin main
+git push origin "$TAG_NAME"
