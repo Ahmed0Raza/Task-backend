@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: postgres:15
@@ -22,6 +20,20 @@ services:
     depends_on:
       - db
     command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  backup:
+    build:
+      context: ./backupSystem
+    container_name: backup
+    depends_on:
+      - backend
+    volumes:
+      - pgdata:/dbdata:ro                             # Mount PostgreSQL volume
+      - ./backupSystem/backups:/app/backups
+      - ./backupSystem/logs:/app/logs
+      - ./backupSystem/reports:/app/reports
+    command: ["sh", "-c", "./search_backup.sh -d /dbdata -i -r && crond -f -l 8"]
+    user: "0:0"                                        # Run as root to avoid permission issues
 
 volumes:
   pgdata:
