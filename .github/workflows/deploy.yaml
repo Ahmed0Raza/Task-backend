@@ -70,10 +70,7 @@ jobs:
         run: |
           echo "📦 postgres-db logs:"
           docker logs postgres-db || echo "⚠️ Failed to fetch postgres-db logs"
-
-          echo "📦 fastapi-backend logs:"
-          docker logs fastapi-backend || echo "⚠️ Failed to fetch fastapi-backend logs"
-
+          
           echo "📦 backup logs:"
           docker logs backup || echo "⚠️ Failed to fetch backup logs"
 
