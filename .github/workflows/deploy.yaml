@@ -6,7 +6,8 @@ on:
       - Backup
 
 jobs:
-  build-and-deploy:
+  build:
+    name: 🛠️ Build & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -16,14 +17,19 @@ jobs:
       - name: 🔐 Inject .env from GitHub Secret
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
-      - name: 🐳 Docker Compose Up (Build + Run)
-        run: |
-          docker-compose up --build -d
+      - name: 🐳 Docker Compose Up (Build & Run)
+        run: docker-compose up --build -d
 
-      - name: ✅ Health check (basic)
+      - name: ✅ Health check (wait then test)
         run: |
           sleep 10
           curl --fail http://localhost || (echo "App failed to start" && exit 1)
 
-      - name: 🧹 Tear down
-        run: docker-compose down
+  deploy:
+    name: 🚀 Deploy (Same Runner)
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: 🟢 Confirm deploy step
+        run: echo "✅ Build succeeded. App is up. Proceed with real deployment if needed."
