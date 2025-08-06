@@ -27,15 +27,25 @@ jobs:
         run: |
           MISSING=false
 
-          for VAR in POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB POSTGRES_PORT POSTGRES_HOST JWT_SECRET JWT_EXPIRATION_SECONDS USERNAME_GITHUB EMAIL_GIT TOKEN_GITHUB
-          do
-            if [ -z "${{ secrets[VAR] }}" ]; then
-              echo "❌ $VAR is not set"
+          check() {
+            if [ -z "$1" ]; then
+              echo "❌ $2 is not set"
               MISSING=true
             else
-              echo "✅ $VAR is set"
+              echo "✅ $2 is set"
             fi
-          done
+          }
+
+          check "${{ secrets.POSTGRES_USER }}" "POSTGRES_USER"
+          check "${{ secrets.POSTGRES_PASSWORD }}" "POSTGRES_PASSWORD"
+          check "${{ secrets.POSTGRES_DB }}" "POSTGRES_DB"
+          check "${{ secrets.POSTGRES_PORT }}" "POSTGRES_PORT"
+          check "${{ secrets.POSTGRES_HOST }}" "POSTGRES_HOST"
+          check "${{ secrets.JWT_SECRET }}" "JWT_SECRET"
+          check "${{ secrets.JWT_EXPIRATION_SECONDS }}" "JWT_EXPIRATION_SECONDS"
+          check "${{ secrets.USERNAME_GITHUB }}" "USERNAME_GITHUB"
+          check "${{ secrets.EMAIL_GIT }}" "EMAIL_GIT"
+          check "${{ secrets.TOKEN_GITHUB }}" "TOKEN_GITHUB"
 
           if [ "$MISSING" = true ]; then
             echo "⛔ Missing required secrets. Exiting..."
@@ -56,9 +66,6 @@ jobs:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
         run: docker-compose up --build -d
 
-      - name: 🧪 Wait for containers to stabilize
-        run: sleep 10
-
       - name: 📦 Show logs for all containers
         run: |
           echo "📦 postgres-db logs:"
@@ -70,10 +77,10 @@ jobs:
           echo "📦 backup logs:"
           docker logs backup || echo "⚠️ Failed to fetch backup logs"
 
-      - name: ✅ Check App Health
+      - name: ⏳ Wait for app to be ready
         run: |
+          sleep 10
           docker ps
-          echo "⏳ Checking app readiness..."
           curl --fail http://localhost:8000 || (echo "❌ App failed to start" && exit 1)
 
   deploy:
@@ -83,4 +90,4 @@ jobs:
 
     steps:
       - name: 🟢 Confirm deploy step
-        run: echo "✅ Build succeeded. App is up. Proceed with deployment if needed."
+        run: echo "✅ Build succeeded. App is up. Proceed with real deployment if needed."
