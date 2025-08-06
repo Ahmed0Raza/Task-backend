@@ -26,10 +26,16 @@ jobs:
       - name: 🐳 Docker Compose Up (Build & Run)
         run: docker-compose up --build -d
 
+      - name: 🐘 Show Postgres logs
+        run: docker logs postgres-db || true
+
+
       - name: ✅ Health check (wait then test)
         run: |
           sleep 10
           curl --fail http://localhost || (echo "App failed to start" && exit 1)
+
+      
 
   deploy:
     name: 🚀 Deploy (Same Runner)
