@@ -3,7 +3,7 @@ name: CI/CD - FastAPI Build & Deploy
 on:
   push:
     branches:
-      - backup
+      - final
 
 jobs:
   build:
@@ -59,16 +59,22 @@ jobs:
           TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
         run: docker-compose up --build -d
 
-      - name: 🐘 Show Postgres logs
-        if: always()
-        run: docker logs postgres-db || true
+      - name: 📦 Show logs for all containers
+        run: |
+          echo "📦 postgres-db logs:"
+          docker logs postgres-db || echo "⚠️ Failed to fetch postgres-db logs"
+
+          echo "📦 fastapi-backend logs:"
+          docker logs fastapi-backend || echo "⚠️ Failed to fetch fastapi-backend logs"
+
+          echo "📦 backup logs:"
+          docker logs backup || echo "⚠️ Failed to fetch backup logs"
 
       - name: ⏳ Wait for app to be ready
         run: |
           sleep 10
           docker ps
-          docker logs fastapi-backend || true
-          curl --fail http://localhost:8000 || (echo "App failed to start" && exit 1)
+          curl --fail http://localhost:8000 || (echo "❌ App failed to start" && exit 1)
 
   deploy:
     name: 🚀 Deploy (Same Runner)
