@@ -67,12 +67,14 @@ jobs:
         run: docker logs postgres-db || true
   
 
-      - name: ✅ Health check (wait then test)
+      - name: ⏳ Wait for app to be ready
         run: |
           sleep 10
-          curl --fail http://localhost || (echo "App failed to start" && exit 1)
+          docker ps
+          docker logs fastapi-backend || true
+          curl --fail http://localhost:8000 || (echo "App failed to start" && exit 1)
 
-            
+                
 
   deploy:
     name: 🚀 Deploy (Same Runner)
