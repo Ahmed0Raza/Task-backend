@@ -1,0 +1,47 @@
+name: CI/CD - FastAPI Build & Deploy
+
+on:
+  push:
+    branches:
+      - Backup
+
+jobs:
+  build:
+    name: 🛠 Build FastAPI App
+    runs-on: self-hosted
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 📁 Set up project directory
+        run: |
+          rm -rf ~/capstone_build
+          mkdir -p ~/capstone_build
+          cp -r . ~/capstone_build
+
+      - name: 🔐 Inject .env from GitHub Secret
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > ~/capstone_build/.env
+
+      - name: 🐳 Docker Compose Up (Build + Run)
+        working-directory: ~/capstone_build
+        run: |
+          docker-compose down || true
+          docker-compose up --build -d
+
+      - name: ✅ Health check (basic)
+        run: |
+          echo "Waiting for service to be healthy..."
+          sleep 10
+          curl --fail http://localhost || (echo "App failed to start" && exit 1)
+
+  deploy:
+    name: 🚀 Deploy FastAPI App
+    needs: build  # Waits for build job to succeed
+    runs-on: self-hosted
+
+    steps:
+      - name: 📦 Reuse existing container deployment
+        run: |
+          echo "Build verified. Deployment confirmed."
