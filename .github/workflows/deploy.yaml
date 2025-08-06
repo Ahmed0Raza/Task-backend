@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - backup
-#branch
+
 jobs:
   build:
     name: 🛠️ Build & Test
@@ -20,17 +20,30 @@ jobs:
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose version
 
+      - name: 🔐 Inject .env from GitHub Secret
+        run: echo "${{ secrets.ENV_FILE }}" > .env
+
       - name: ✅ Validate secrets are present
         run: |
-          REQUIRED_SECRETS=(POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB POSTGRES_PORT POSTGRES_HOST JWT_SECRET JWT_EXPIRATION_SECONDS USERNAME_GITHUB EMAIL_GIT TOKEN_GITHUB)
-          for secret in "${REQUIRED_SECRETS[@]}"; do
-            if [ -z "${{ secrets[$secret] }}" ]; then
-              echo "❌ $secret is NOT set"
-              exit 1
-            else
-              echo "✅ $secret is set"
-            fi
-          done
+          MISSING=false
+
+          if [ -z "${{ secrets.POSTGRES_USER }}" ]; then echo "❌ POSTGRES_USER is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.POSTGRES_PASSWORD }}" ]; then echo "❌ POSTGRES_PASSWORD is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.POSTGRES_DB }}" ]; then echo "❌ POSTGRES_DB is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.POSTGRES_PORT }}" ]; then echo "❌ POSTGRES_PORT is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.POSTGRES_HOST }}" ]; then echo "❌ POSTGRES_HOST is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.JWT_SECRET }}" ]; then echo "❌ JWT_SECRET is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.JWT_EXPIRATION_SECONDS }}" ]; then echo "❌ JWT_EXPIRATION_SECONDS is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.USERNAME_GITHUB }}" ]; then echo "❌ USERNAME_GITHUB is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.EMAIL_GIT }}" ]; then echo "❌ EMAIL_GIT is not set"; MISSING=true; fi
+          if [ -z "${{ secrets.TOKEN_GITHUB }}" ]; then echo "❌ TOKEN_GITHUB is not set"; MISSING=true; fi
+
+          if [ "$MISSING" = true ]; then
+            echo "⛔ Missing required secrets. Exiting..."
+            exit 1
+          else
+            echo "✅ All required secrets are present."
+          fi
 
       - name: 🐳 Docker Compose Build & Run
         env:
@@ -50,14 +63,12 @@ jobs:
         if: always()
         run: docker logs postgres-db || true
 
-      - name: ⏳ Wait and verify backend
+      - name: ⏳ Wait for app to be ready
         run: |
-          echo "Waiting 10s for backend to boot..."
           sleep 10
           docker ps
           docker logs fastapi-backend || true
-          echo "Testing backend health endpoint"
-          curl --fail http://localhost:8000 || (echo "❌ App failed to start" && exit 1)
+          curl --fail http://localhost:8000 || (echo "App failed to start" && exit 1)
 
   deploy:
     name: 🚀 Deploy (Same Runner)
