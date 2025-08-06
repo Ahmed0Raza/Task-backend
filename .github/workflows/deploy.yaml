@@ -14,39 +14,23 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: Install docker-compose
+      - name: 🐳 Install docker-compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose version
 
-      - name: 🔐 Inject .env from GitHub Secret
-        run: echo "${{ secrets.ENV_FILE }}" > .env
-      
-      - name: ✅ Check if secrets are passed
-        shell: bash
+      - name: ✅ Validate secrets are present
         run: |
-          if [ -z "${{ secrets.POSTGRES_USER }}" ]; then
-            echo "❌ POSTGRES_USER is NOT set"
-            exit 1
-          else
-            echo "✅ POSTGRES_USER is set"
-          fi
-
-          if [ -z "${{ secrets.POSTGRES_PASSWORD }}" ]; then
-            echo "❌ POSTGRES_PASSWORD is NOT set"
-            exit 1
-          else
-            echo "✅ POSTGRES_PASSWORD is set"
-          fi
-
-          if [ -z "${{ secrets.POSTGRES_DB }}" ]; then
-            echo "❌ POSTGRES_DB is NOT set"
-            exit 1
-          else
-            echo "✅ POSTGRES_DB is set"
-          fi
-
+          REQUIRED_SECRETS=(POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB POSTGRES_PORT POSTGRES_HOST JWT_SECRET JWT_EXPIRATION_SECONDS USERNAME_GITHUB EMAIL_GIT TOKEN_GITHUB)
+          for secret in "${REQUIRED_SECRETS[@]}"; do
+            if [ -z "${{ secrets[$secret] }}" ]; then
+              echo "❌ $secret is NOT set"
+              exit 1
+            else
+              echo "✅ $secret is set"
+            fi
+          done
 
       - name: 🐳 Docker Compose Build & Run
         env:
@@ -65,16 +49,15 @@ jobs:
       - name: 🐘 Show Postgres logs
         if: always()
         run: docker logs postgres-db || true
-  
 
-      - name: ⏳ Wait for app to be ready
+      - name: ⏳ Wait and verify backend
         run: |
+          echo "Waiting 10s for backend to boot..."
           sleep 10
           docker ps
           docker logs fastapi-backend || true
-          curl --fail http://localhost:8000 || (echo "App failed to start" && exit 1)
-
-                
+          echo "Testing backend health endpoint"
+          curl --fail http://localhost:8000 || (echo "❌ App failed to start" && exit 1)
 
   deploy:
     name: 🚀 Deploy (Same Runner)
