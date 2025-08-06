@@ -23,20 +23,44 @@ jobs:
       - name: 🔐 Inject .env from GitHub Secret
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
-      - name: 🐳 Docker Compose Up (Build & Run)
-        run: docker-compose up --build -d
-
-      - name: 🐘 Show Postgres logs
-        if: always()
-        run: docker logs postgres-db || true
-  
-
-      - name: ✅ Health check (wait then test)
+      - name: ✅ Check if secrets are passed
         run: |
-          sleep 10
-          curl --fail http://localhost || (echo "App failed to start" && exit 1)
+          if [ -z "${{ secrets.POSTGRES_USER }}" ]; then
+            echo "❌ POSTGRES_USER is NOT set"
+            exit 1
+          else
+            echo "✅ POSTGRES_USER is set"
+          fi
 
-      
+          if [ -z "${{ secrets.POSTGRES_PASSWORD }}" ]; then
+            echo "❌ POSTGRES_PASSWORD is NOT set"
+            exit 1
+          else
+            echo "✅ POSTGRES_PASSWORD is set"
+          fi
+
+          if [ -z "${{ secrets.POSTGRES_DB }}" ]; then
+            echo "❌ POSTGRES_DB is NOT set"
+            exit 1
+          else
+            echo "✅ POSTGRES_DB is set"
+          fi
+
+
+            - name: 🐳 Docker Compose Up (Build & Run)
+              run: docker-compose up --build -d
+
+            - name: 🐘 Show Postgres logs
+              if: always()
+              run: docker logs postgres-db || true
+        
+
+            - name: ✅ Health check (wait then test)
+              run: |
+                sleep 10
+                curl --fail http://localhost || (echo "App failed to start" && exit 1)
+
+            
 
   deploy:
     name: 🚀 Deploy (Same Runner)
