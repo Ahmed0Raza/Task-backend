@@ -27,8 +27,9 @@ jobs:
         run: docker-compose up --build -d
 
       - name: 🐘 Show Postgres logs
+        if: always()
         run: docker logs postgres-db || true
-
+  
 
       - name: ✅ Health check (wait then test)
         run: |
