@@ -27,12 +27,13 @@ services:
     container_name: backup
     depends_on:
       - backend
+    env_file:
+      - .env
     volumes:
-      - pgdata:/dbdata:ro                             # Mount PostgreSQL volume
+      - pgdata:/dbdata:ro                             
       - ./backupSystem/backups:/app/backups
       - ./backupSystem/logs:/app/logs
       - ./backupSystem/reports:/app/reports
-      - /home/ahmed/.ssh/id_backup_ed25519:/root/.ssh/id_backup_ed25519:ro
 
     command: ["sh", "-c", "./search_backup.sh -d /dbdata -i -r && crond -f -l 8"]
     user: "0:0"                                        # Run as root to avoid permission issues

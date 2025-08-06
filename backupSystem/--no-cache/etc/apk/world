@@ -1,0 +1,12 @@
+alpine-baselayout
+alpine-keys
+alpine-release
+apk-tools
+bash
+busybox
+busybox-suid
+curl
+git
+libc-utils
+openssh
+rsync
