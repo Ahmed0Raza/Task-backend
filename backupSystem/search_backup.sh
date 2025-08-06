@@ -45,13 +45,13 @@ if [ -f "$BASE_DIR/.env" ]; then
 fi
 
 # === CHECK REQUIRED ENV VARS ===
-: "${GITHUB_USERNAME:?GITHUB_USERNAME is not set in .env}"
-: "${GITHUB_TOKEN:?GITHUB_TOKEN is not set in .env}"
-: "${GIT_EMAIL:?GIT_EMAIL is not set in .env}"
+: "${USERNAME_GITHUB:?USERNAME_GITHUB is not set in .env}"
+: "${TOKEN_GITHUB:?TOKEN_GITHUB is not set in .env}"
+: "${EMAIL_GIT:?EMAIL_GIT is not set in .env}"
 
 REPO_NAME="capstone-backup"
-API_URL="https://api.github.com/repos/$GITHUB_USERNAME/$REPO_NAME"
-REPO_URL="https://$GITHUB_USERNAME:$GITHUB_TOKEN@github.com/$GITHUB_USERNAME/$REPO_NAME.git"
+API_URL="https://api.github.com/repos/$USERNAME_GITHUB/$REPO_NAME"
+REPO_URL="https://$USERNAME_GITHUB:$TOKEN_GITHUB@github.com/$USERNAME_GITHUB/$REPO_NAME.git"
 
 # === PREP ===
 mkdir -p "$BACKUP_DIR" "$BASE_DIR/logs" "$BASE_DIR/reports"
@@ -91,11 +91,11 @@ fi
 
 # === CHECK IF REPO EXISTS ===
 echo "$TIMESTAMP | Checking if GitHub repository exists"
-HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $GITHUB_TOKEN" "$API_URL")
+HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $TOKEN_GITHUB" "$API_URL")
 
 if [ "$HTTP_STATUS" -ne 200 ]; then
   echo "$TIMESTAMP | GitHub repo $REPO_NAME does not exist, creating new repository"
-  curl -s -H "Authorization: token $GITHUB_TOKEN" \
+  curl -s -H "Authorization: token $TOKEN_GITHUB" \
        -d "{\"name\":\"$REPO_NAME\",\"description\":\"Automated backup repository\"}" \
        https://api.github.com/user/repos > /dev/null || {
          echo "$TIMESTAMP | ERROR: Failed to create repository, check GitHub token and permissions"
@@ -107,7 +107,7 @@ if [ "$HTTP_STATUS" -ne 200 ]; then
   cd "$BASE_DIR"
   git init
   git config user.name "BackupBot"
-  git config user.email "$GIT_EMAIL"
+  git config user.email "$EMAIL_GIT"
   git remote add origin "$REPO_URL"
   
   # Create .gitignore if it doesn't exist
@@ -142,14 +142,14 @@ else
     echo "$TIMESTAMP | Initializing git repository in $BASE_DIR"
     git init
     git config user.name "BackupBot"
-    git config user.email "$GIT_EMAIL"
+    git config user.email "$EMAIL_GIT"
     git remote add origin "$REPO_URL"
     git fetch origin
     git reset --hard origin/main 2>/dev/null || echo "$TIMESTAMP | No previous commits found, starting fresh"
   else
     echo "$TIMESTAMP | Git repository already initialized"
     git config user.name "BackupBot"
-    git config user.email "$GIT_EMAIL"
+    git config user.email "$EMAIL_GIT"
     
     # Make sure remote is set correctly
     if ! git remote get-url origin >/dev/null 2>&1; then
@@ -198,7 +198,7 @@ echo "$TIMESTAMP | Log file: $LOG_FILE"
 if $DO_REPORT; then
   echo "$TIMESTAMP | Report file: $REPORT_FILE"
 fi
-echo "$TIMESTAMP | GitHub repository: https://github.com/$GITHUB_USERNAME/$REPO_NAME"
+echo "$TIMESTAMP | GitHub repository: https://github.com/$USERNAME_GITHUB/$REPO_NAME"
 
 
 
