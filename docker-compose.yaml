@@ -16,7 +16,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
-
+#comment
   backend:
     build: .
     container_name: fastapi-backend
