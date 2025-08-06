@@ -3,11 +3,10 @@ name: CI/CD - FastAPI Build & Deploy
 on:
   push:
     branches:
-      - Backup
+      - backup
 
 jobs:
-  build:
-    name: 🛠️ Build & Test
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,19 +16,14 @@ jobs:
       - name: 🔐 Inject .env from GitHub Secret
         run: echo "${{ secrets.ENV_FILE }}" > .env
 
-      - name: 🐳 Docker Compose Up (Build & Run)
-        run: docker-compose up --build -d
+      - name: 🐳 Docker Compose Up (Build + Run)
+        run: |
+          docker-compose up --build -d
 
-      - name: ✅ Health check (wait then test)
+      - name: ✅ Health check (basic)
         run: |
           sleep 10
           curl --fail http://localhost || (echo "App failed to start" && exit 1)
 
-  deploy:
-    name: 🚀 Deploy (Same Runner)
-    runs-on: ubuntu-latest
-    needs: build
-
-    steps:
-      - name: 🟢 Confirm deploy step
-        run: echo "✅ Build succeeded. App is up. Proceed with real deployment if needed."
+      - name: 🧹 Tear down
+        run: docker-compose down
