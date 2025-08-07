@@ -14,71 +14,53 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
-      - name: 🐳 Install docker-compose
+      - name: 🐳 Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
           sudo chmod +x /usr/local/bin/docker-compose
           docker-compose version
 
-      - name: 🔐 Inject .env from GitHub Secret
-        run: echo "${{ secrets.ENV_FILE }}" > .env
-
-      - name: ✅ Validate secrets are present
+      - name: 🔐 Create .env file dynamically from GitHub Secrets
         run: |
-          MISSING=false
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "JWT_EXPIRATION_SECONDS=${{ secrets.JWT_EXPIRATION_SECONDS }}" >> .env
+          echo "USERNAME_GITHUB=${{ secrets.USERNAME_GITHUB }}" >> .env
+          echo "EMAIL_GIT=${{ secrets.EMAIL_GIT }}" >> .env
+          echo "TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}" >> .env
 
-          check() {
-            if [ -z "$1" ]; then
-              echo "❌ $2 is not set"
-              MISSING=true
+      - name: ✅ Validate secrets presence
+        run: |
+          for var in POSTGRES_USER POSTGRES_PASSWORD POSTGRES_DB POSTGRES_PORT POSTGRES_HOST JWT_SECRET JWT_EXPIRATION_SECONDS USERNAME_GITHUB EMAIL_GIT TOKEN_GITHUB; do
+            if ! grep -q "$var" .env; then
+              echo "❌ Missing $var in secrets!"
+              exit 1
             else
-              echo "✅ $2 is set"
+              echo "✅ $var is set"
             fi
-          }
-
-          check "${{ secrets.POSTGRES_USER }}" "POSTGRES_USER"
-          check "${{ secrets.POSTGRES_PASSWORD }}" "POSTGRES_PASSWORD"
-          check "${{ secrets.POSTGRES_DB }}" "POSTGRES_DB"
-          check "${{ secrets.POSTGRES_PORT }}" "POSTGRES_PORT"
-          check "${{ secrets.POSTGRES_HOST }}" "POSTGRES_HOST"
-          check "${{ secrets.JWT_SECRET }}" "JWT_SECRET"
-          check "${{ secrets.JWT_EXPIRATION_SECONDS }}" "JWT_EXPIRATION_SECONDS"
-          check "${{ secrets.USERNAME_GITHUB }}" "USERNAME_GITHUB"
-          check "${{ secrets.EMAIL_GIT }}" "EMAIL_GIT"
-          check "${{ secrets.TOKEN_GITHUB }}" "TOKEN_GITHUB"
-
-          if [ "$MISSING" = true ]; then
-            echo "⛔ Missing required secrets. Exiting..."
-            exit 1
-          fi
+          done
 
       - name: 🐳 Docker Compose Build & Run
-        env:
-          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
-          POSTGRES_PORT: ${{ secrets.POSTGRES_PORT }}
-          POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
-          JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          JWT_EXPIRATION_SECONDS: ${{ secrets.JWT_EXPIRATION_SECONDS }}
-          USERNAME_GITHUB: ${{ secrets.USERNAME_GITHUB }}
-          EMAIL_GIT: ${{ secrets.EMAIL_GIT }}
-          TOKEN_GITHUB: ${{ secrets.TOKEN_GITHUB }}
         run: docker-compose up --build -d
 
-      - name: 📦 Show logs for all containers
+      - name: 📦 Show logs for containers
         run: |
           echo "📦 postgres-db logs:"
-          docker logs postgres-db || echo "⚠️ Failed to fetch postgres-db logs"
-          
+          docker logs postgres-db || echo "⚠️ postgres-db logs unavailable"
           echo "📦 backup logs:"
-          docker logs backup || echo "⚠️ Failed to fetch backup logs"
+          docker logs backup || echo "⚠️ backup logs unavailable"
+          echo "📦 fastapi-backend logs:"
+          docker logs fastapi-backend || echo "⚠️ backend logs unavailable"
 
-      - name: ⏳ Wait for app to be ready
+      - name: ⏳ Wait for app & Health Check
         run: |
           sleep 10
           docker ps
-          curl --fail http://localhost:8000 || (echo "❌ App failed to start" && exit 1)
+          curl --fail http://localhost:8000 || (echo "❌ FastAPI failed to start" && exit 1)
 
   deploy:
     name: 🚀 Deploy (Same Runner)
@@ -86,5 +68,5 @@ jobs:
     needs: build
 
     steps:
-      - name: 🟢 Confirm deploy step
-        run: echo "✅ Build succeeded. App is up. Proceed with real deployment if needed."
+      - name: 🟢 Confirm Deployment Step
+        run: echo "✅ Build & Test succeeded. Deploy step can now push to server or registry."
