@@ -1,0 +1,44 @@
+services:
+  db:
+    image: postgres:15
+    container_name: postgres-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "3000:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/dbdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: fastapi-backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  backup:
+    build:
+      context: ./backupSystem
+    container_name: backup
+    depends_on:
+      - backend
+    env_file:
+      - .env
+    volumes:
+      - postgres-data:/dbdata:ro            
+    command: ["sh", "-c", "./search_backup.sh -d /dbdata -i -r && crond -f -l 8"]
+    user: "0:0"  # Run as root to avoid permission issues
+
+volumes:
+  postgres-data:
