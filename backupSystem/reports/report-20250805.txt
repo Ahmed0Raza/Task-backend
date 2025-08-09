@@ -1,0 +1,472 @@
+--------------------------------------------------
+[20250805 19:29:23] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:29:23
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:42:35] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:42:35
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:46:01] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:46:01
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:47:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:47:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:48:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:48:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:49:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:49:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:50:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:50:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:50:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:50:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:50:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:50:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:51:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:51:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:51:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:51:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:51:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:51:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:52:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:52:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:52:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:52:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:52:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:52:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:53:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:53:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:53:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:53:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:53:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:53:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:54:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:54:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:54:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:54:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:54:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:54:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:55:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:55:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:55:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:55:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:55:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:55:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:56:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:56:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:56:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:56:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:56:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:56:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:56:22] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:56:22
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:57:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:57:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:58:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:58:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 19:59:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 19:59:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:00:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:00:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:01:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:01:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:02:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:02:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:03:26] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:03:26
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:04:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:04:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:05:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:05:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:06:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:06:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 20:07:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 20:07:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:05:39] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:05:39
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:13:19] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:13:19
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:21:55] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:21:55
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:32:26] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:32:26
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:34:51] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:34:51
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:38:26] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:38:26
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:40:29] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:40:29
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:41:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:41:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:42:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:42:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:51:53] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:51:53
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:53:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:53:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:54:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:54:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:55:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:55:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:56:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:56:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:57:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:57:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:58:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:58:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 21:59:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 21:59:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 22:01:06] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 22:01:06
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 22:02:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 22:02:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
+--------------------------------------------------
+[20250805 22:03:00] 📄 Backup Report
+--------------------------------------------------
+🕒 Timestamp        : 20250805 22:03:00
+📂 Backed Up Dir    : /dbdata
+📁 Archive File     : /app/backups/incremental-20250805/backup_dbdata_20250805.tar.gz
+📦 Archive Size     : 6.4M
+
