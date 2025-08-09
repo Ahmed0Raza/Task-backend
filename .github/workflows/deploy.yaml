@@ -3,7 +3,7 @@ name: CI/CD - FastAPI Build & Deploy
 on:
   push:
     branches:
-      - final
+      - production
 
 #comment
 jobs:
