@@ -8,7 +8,7 @@ services:
     ports:
       - "3000:5432"
     volumes:
-      - postgres-data:/var/lib/postgresql/dbdata
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
       interval: 5s
@@ -36,8 +36,8 @@ services:
     env_file:
       - .env
     volumes:
-      - postgres-data:/dbdata:ro            
-    command: ["sh", "-c", "./search_backup.sh -d /dbdata -i -r && crond -f -l 8"]
+      - postgres-data:/data:ro 
+    command: ["sh", "-c", "./search_backup.sh -d /data -i -r && crond -f -l 8"]
     user: "0:0"  # Run as root to avoid permission issues
 
 volumes:
