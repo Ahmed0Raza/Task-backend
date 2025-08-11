@@ -5,8 +5,6 @@ on:
     branches:
       - production
       
-
-#comment
 jobs:
   build:
     name: 🛠️ Build & Test
@@ -49,15 +47,6 @@ jobs:
       - name: 🐳 Docker Compose Build & Run
         run: docker-compose up --build -d
 
-      - name: 📦 Show logs for containers
-        run: |
-          echo "📦 postgres-db logs:"
-          docker logs postgres-db || echo "⚠️ postgres-db logs unavailable"
-          echo "📦 backup logs:"
-          docker logs backup || echo "⚠️ backup logs unavailable"
-          echo "📦 fastapi-backend logs:"
-          docker logs fastapi-backend || echo "⚠️ backend logs unavailable"
-
       - name: ⏳ Wait for app & Health Check
         run: |
           sleep 10
@@ -65,10 +54,19 @@ jobs:
           curl --fail http://localhost:8000 || (echo "❌ FastAPI failed to start" && exit 1)
 
   deploy:
-    name: 🚀 Deploy (Same Runner)
     runs-on: ubuntu-latest
     needs: build
-
     steps:
-      - name: 🟢 Confirm Deployment Step
-        run: echo "✅ Build & Test succeeded. Deploy step can now push to server or registry."
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔑 Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🚀 Deploy to EC2
+        run: |
+          ssh ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "cd /home/ec2-user/fastapi/Task-backend && git pull && sudo docker-compose up --build -d"
