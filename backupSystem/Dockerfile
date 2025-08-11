@@ -1,7 +1,7 @@
 FROM alpine:latest
 
-# Install dependencies
-RUN apk add --no-cache bash rsync busybox-suid git openssh curl
+# Install dependencies including postgresql-client for pg_dump
+RUN apk add --no-cache bash rsync busybox-suid git openssh curl postgresql-client
 
 # Set working directory
 WORKDIR /app
@@ -10,7 +10,6 @@ WORKDIR /app
 COPY search_backup.sh .
 COPY cronjob.txt .
 RUN echo -e "cronjob.txt\nsearch_backup.sh" > .gitignore
-
 
 # Permissions
 RUN chmod +x search_backup.sh
