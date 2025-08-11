@@ -1,1 +1,1 @@
-* * * * * /app/search_backup.sh -d /data -b -i -r >> /var/log/cron.log 2>&1
+0 */6 * * * /app/search_backup.sh -d /data -b -i -r >> /var/log/cron.log 2>&1
