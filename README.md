@@ -98,4 +98,3 @@ Once running, visit:
 
 [http://localhost:8000/docs](http://localhost:8000/docs)  
 to explore the **Swagger UI** for all API endpoints.
-```
