@@ -24,7 +24,7 @@ git clone https://github.com/Ahmed0Raza/Task-backend.git
 ## 📂 2. Navigate to the Project Folder
 
 ```bash
-cd task-backend
+cd Task-Backend
 ```
 
 ---
