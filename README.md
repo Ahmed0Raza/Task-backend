@@ -1,4 +1,3 @@
-```markdown
 # 🚀 Task Backend
 
 Backend service for **Task Backend**, powered by **FastAPI**, **PostgreSQL**, and a **Backup Service** using Docker Compose.
