@@ -1,42 +1,79 @@
-# Task Backend
+# 🚀 Task Backend
 
-This repository contains the backend service for **Task Backend**. It uses **Docker Compose** to run three containers:
-1. Backend (FastAPI)
-2. PostgreSQL Database
-3. Backup Service
+Backend service for **Task Backend**, powered by **FastAPI**, **PostgreSQL**, and a **Backup Service** using Docker Compose.
 
-## Getting Started
+---
 
-### 1. Clone the Repository
-git clone <your-repo-url>
+## 🛠 Containers
+When you run this project with Docker Compose, it starts:
+1. **Backend** – FastAPI service
+2. **Database** – PostgreSQL
+3. **Backup Service**
 
-### 2. Navigate to the Main Folder
-When you clone the repository, a folder named **task-backend** will be created. Move into it:
-cd task-backend
+---
 
-### 3. Set Up Local Environment Variables
-Create a `.env` file in the **task-backend** directory and add the following variables:
+## 📥 1. Clone the Repository
 
+```bash
+git clone https://github.com/Ahmed0Raza/Task-backend.git
+```
+
+---
+
+## 📂 2. Navigate to the Project Folder
+
+```bash
+cd Task-Backend
+```
+
+---
+
+## 🔑 3. Set Up Environment Variables
+
+Create a `.env` file in the **root folder** and add the following:
+
+```ini
+# 🔐 JWT Config
 JWT_SECRET=my_strong_secret_key
 JWT_EXPIRATION_SECONDS=<your_value_here>
+
+# 🗄 Database Config
 POSTGRES_USER=<your_value_here>
 POSTGRES_PASSWORD=<your_value_here>
 POSTGRES_DB=<your_value_here>
 POSTGRES_PORT=<your_value_here>
 POSTGRES_HOST=<your_value_here>
+
+# 🔗 GitHub Config
 USERNAME_GITHUB=<your_value_here>
 TOKEN_GITHUB=<your_value_here>
 EMAIL_GIT=<your_value_here>
+```
 
-## Running the Application
-To build and run the containers (backend, database, backup):
+💡 **Tip:** Keep `.env` private — never commit it to GitHub.
+
+---
+
+## ▶️ 4. Run the Application
+
+To build and start all containers:
+
+```bash
 docker compose up --build
+```
 
-This will start all three containers.
+This launches:
+- FastAPI backend (port `8000`)
+- PostgreSQL database
+- Backup service
 
-## GitHub Secrets Configuration
-Your **GitHub Actions Secrets** should be configured as follows (names must match exactly):
+---
 
+## 🔐 GitHub Actions Secrets
+
+In **GitHub → Settings → Secrets and variables → Actions**, add these **exact names**:
+
+```
 EC2_HOST  
 EC2_SSH_KEY  
 EC2_USER  
@@ -49,13 +86,14 @@ POSTGRES_PASSWORD
 POSTGRES_PORT  
 POSTGRES_USER  
 TOKEN_GITHUB  
-USERNAME_GITHUB  
+USERNAME_GITHUB
+```
 
-Make sure you add them in your GitHub repository settings under:
-Settings → Secrets and variables → Actions
+---
 
-## Accessing the Backend Documentation
-Once the containers are running, you can access the API documentation at:
-http://localhost:8000/docs
+## 📜 Access API Docs
 
-This will open the **Swagger UI** where you can test all API endpoints.
+Once running, visit:
+
+[http://localhost:8000/docs](http://localhost:8000/docs)  
+to explore the **Swagger UI** for all API endpoints.
