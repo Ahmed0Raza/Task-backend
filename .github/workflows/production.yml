@@ -16,16 +16,17 @@ jobs:
 
       - name: 🔐 Create .env (production)
         run: |
-          echo "POSTGRES_USER=${{ secrets.PROD_POSTGRES_USER }}" >> .env
-          echo "POSTGRES_PASSWORD=${{ secrets.PROD_POSTGRES_PASSWORD }}" >> .env
-          echo "POSTGRES_DB=${{ secrets.PROD_POSTGRES_DB }}" >> .env
-          echo "POSTGRES_PORT=${{ secrets.PROD_POSTGRES_PORT }}" >> .env
-          echo "POSTGRES_HOST=${{ secrets.PROD_POSTGRES_HOST }}" >> .env
-          echo "JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}" >> .env
-          echo "JWT_EXPIRATION_SECONDS=${{ secrets.PROD_JWT_EXPIRATION_SECONDS }}" >> .env
-          echo "EMAIL_GIT=${{ secrets.PROD_EMAIL_GIT }}" >> .env
-          echo "TOKEN_GITHUB=${{ secrets.PROD_TOKEN_GITHUB }}" >> .env
-          echo "USERNAME_GITHUB=${{ secrets.PROD_USERNAME_GITHUB }}" >> .env
+          echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
+          echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
+          echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+          echo "JWT_EXPIRATION_SECONDS=${{ secrets.JWT_EXPIRATION_SECONDS }}" >> .env
+          echo "EMAIL_GIT=${{ secrets.EMAIL_GIT }}" >> .env
+          echo "TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}" >> .env
+          echo "USERNAME_GITHUB=${{ secrets.USERNAME_GITHUB }}" >> .env
+      
       - name: Install Docker Compose
         run: |
           sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
@@ -37,6 +38,14 @@ jobs:
           sleep 10
           curl --fail http://localhost:8000 || (echo "❌ Production FastAPI failed to start" && exit 1)
           docker-compose -f docker-compose.prod.yml down
+      
+      - name: 📜 Show Logs (on failure)
+        if: failure()
+        run: |
+          echo "======= BACKEND LOGS ======="
+          docker-compose -f docker-compose.prod.yml logs backend || true
+          echo "======= DB LOGS ======="
+          docker-compose -f docker-compose.prod.yml logs db || true
 
   deploy:
     name: 🚀 Deploy to EC2 (Production)
@@ -56,20 +65,34 @@ jobs:
 
       - name: 🚀 Deploy to Production
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-            mkdir -p /home/ec2-user/production &&
-            cd /home/ec2-user/production &&
-            git pull || git clone https://github.com/Ahmed0Raza/Task-backend.git . &&
-            git checkout production &&
-            echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
-            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
-            echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
-            echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
-            echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
-            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
-            echo "JWT_EXPIRATION_SECONDS=${{ secrets.JWT_EXPIRATION_SECONDS }}" >> .env
-            echo "EMAIL_GIT=${{ secrets.EMAIL_GIT }}" >> .env
-            echo "TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}" >> .env
-            echo "USERNAME_GITHUB=${{ secrets.USERNAME_GITHUB }}" >> .env &&
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+            set -e
+
+            if [ -d /home/ec2-user/production/.git ]; then
+              echo '📂 Repo exists, pulling latest...'
+              cd /home/ec2-user/production
+              git fetch origin
+              git reset --hard origin/production
+            else
+              echo '📂 Repo not found, cloning fresh...'
+              git clone -b production https://github.com/Ahmed0Raza/Task-backend.git /home/ec2-user/production
+              cd /home/ec2-user/production
+
+              # Create .env only on fresh clone
+              cat > .env << 'EOF'
+          POSTGRES_USER=${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.POSTGRES_DB }}
+          POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+          POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}
+          JWT_SECRET=${{ secrets.JWT_SECRET }}
+          JWT_EXPIRATION_SECONDS=${{ secrets.JWT_EXPIRATION_SECONDS }}
+          EMAIL_GIT=${{ secrets.EMAIL_GIT }}
+          TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}
+          USERNAME_GITHUB=${{ secrets.USERNAME_GITHUB }}
+          EOF
+            fi
+
+            # Always bring up Docker
             sudo docker-compose -f docker-compose.prod.yml up --build -d
-          "
+          ENDSSH
