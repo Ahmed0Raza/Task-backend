@@ -93,3 +93,4 @@ jobs:
             # Always bring up Docker
             sudo docker compose -f docker-compose.staging.yml up --build -d
           "
+
