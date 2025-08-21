@@ -43,9 +43,9 @@ jobs:
         if: failure()
         run: |
           echo "======= BACKEND LOGS ======="
-          docker compose -f docker-compose.staging.yml logs backend || true
+          docker-compose -f docker-compose.staging.yml logs backend || true
           echo "======= DB LOGS ======="
-          docker compose -f docker-compose.staging.yml logs db || true
+          docker-compose -f docker-compose.staging.yml logs db || true
 
   deploy:
     name: 🚀 Deploy to EC2 (Staging)
