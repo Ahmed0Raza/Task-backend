@@ -33,7 +33,7 @@ jobs:
       - name: 🐳 Build & Run Tests
         run: |
           docker-compose -f docker-compose.staging.yml up --build -d
-          sleep 10
+          sleep 30
           curl --fail http://localhost:8001 || (echo "❌ Staging FastAPI failed to start" && exit 1)
           docker-compose -f docker-compose.staging.yml down
       - name: 📜 Show Logs (on failure)
