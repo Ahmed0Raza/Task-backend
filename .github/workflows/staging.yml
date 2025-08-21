@@ -26,12 +26,26 @@ jobs:
           echo "EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}" >> .env
           echo "TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}" >> .env
           echo "USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}" >> .env
+      
+      - name: Install Docker Compose
+        run: |
+          sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+          sudo chmod +x /usr/local/bin/docker-compose
+      
       - name: 🐳 Build & Run Tests
         run: |
           docker-compose -f docker-compose.staging.yml up --build -d
           sleep 10
           curl --fail http://localhost:8001 || (echo "❌ Staging FastAPI failed to start" && exit 1)
           docker-compose -f docker-compose.staging.yml down
+      
+      - name: 📜 Show Logs (on failure)
+        if: failure()
+        run: |
+          echo "======= BACKEND LOGS ======="
+          docker-compose -f docker-compose.staging.yml logs backend || true
+          echo "======= DB LOGS ======="
+          docker-compose -f docker-compose.staging.yml logs db || true
 
   deploy:
     name: 🚀 Deploy to EC2 (Staging)
@@ -51,20 +65,34 @@ jobs:
 
       - name: 🚀 Deploy to Staging
         run: |
-          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
-            mkdir -p /home/ec2-user/staging &&
-            cd /home/ec2-user/staging &&
-            git pull || git clone https://github.com/Ahmed0Raza/Task-backend.git . &&
-            git checkout staging &&
-            echo "POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}" >> .env
-            echo "POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}" >> .env
-            echo "POSTGRES_DB=${{ secrets.STAGING_POSTGRES_DB }}" >> .env
-            echo "POSTGRES_PORT=${{ secrets.STAGING_POSTGRES_PORT }}" >> .env
-            echo "POSTGRES_HOST=${{ secrets.STAGING_POSTGRES_HOST }}" >> .env
-            echo "JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}" >> .env
-            echo "JWT_EXPIRATION_SECONDS=${{ secrets.STAGING_JWT_EXPIRATION_SECONDS }}" >> .env
-            echo "EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}" >> .env
-            echo "TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}" >> .env
-            echo "USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}" >> .env &&
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+            set -e
+
+            if [ -d /home/ec2-user/staging/.git ]; then
+              echo '📂 Repo exists, pulling latest...'
+              cd /home/ec2-user/staging
+              git fetch origin
+              git reset --hard origin/staging
+            else
+              echo '📂 Repo not found, cloning fresh...'
+              git clone -b staging https://github.com/Ahmed0Raza/Task-backend.git /home/ec2-user/staging
+              cd /home/ec2-user/staging
+
+              # Create .env only on fresh clone
+              cat > .env << 'EOF'
+          POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}
+          POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}
+          POSTGRES_DB=${{ secrets.STAGING_POSTGRES_DB }}
+          POSTGRES_PORT=${{ secrets.STAGING_POSTGRES_PORT }}
+          POSTGRES_HOST=${{ secrets.STAGING_POSTGRES_HOST }}
+          JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}
+          JWT_EXPIRATION_SECONDS=${{ secrets.STAGING_JWT_EXPIRATION_SECONDS }}
+          EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}
+          TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}
+          USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}
+          EOF
+            fi
+
+            # Always bring up Docker
             sudo docker-compose -f docker-compose.staging.yml up --build -d
-          "
+          ENDSSH
