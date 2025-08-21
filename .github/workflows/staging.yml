@@ -65,32 +65,31 @@ jobs:
           ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
             set -e
 
-            # Clean deploy folder if not a git repo
-            if [ ! -d /home/ec2-user/staging/.git ]; then
-              rm -rf /home/ec2-user/staging
-              git clone -b staging https://github.com/Ahmed0Raza/Task-backend.git /home/ec2-user/staging
-            else
+            if [ -d /home/ec2-user/staging/.git ]; then
+              echo '📂 Repo exists, pulling latest...'
               cd /home/ec2-user/staging
               git fetch origin
               git reset --hard origin/staging
+            else
+              echo '📂 Repo not found, cloning fresh...'
+              git clone -b staging https://github.com/Ahmed0Raza/Task-backend.git /home/ec2-user/staging
+              cd /home/ec2-user/staging
+
+              # Create .env only on fresh clone
+              cat > .env <<EOF
+              POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}
+              POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}
+              POSTGRES_DB=${{ secrets.STAGING_POSTGRES_DB }}
+              POSTGRES_PORT=${{ secrets.STAGING_POSTGRES_PORT }}
+              POSTGRES_HOST=${{ secrets.STAGING_POSTGRES_HOST }}
+              JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}
+              JWT_EXPIRATION_SECONDS=${{ secrets.STAGING_JWT_EXPIRATION_SECONDS }}
+              EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}
+              TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}
+              USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}
+              EOF
             fi
 
-            cd /home/ec2-user/staging
-
-            # Recreate .env from secrets
-            cat > .env <<EOF
-            POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}
-            POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}
-            POSTGRES_DB=${{ secrets.STAGING_POSTGRES_DB }}
-            POSTGRES_PORT=${{ secrets.STAGING_POSTGRES_PORT }}
-            POSTGRES_HOST=${{ secrets.STAGING_POSTGRES_HOST }}
-            JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}
-            JWT_EXPIRATION_SECONDS=${{ secrets.STAGING_JWT_EXPIRATION_SECONDS }}
-            EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}
-            TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}
-            USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}
-            EOF
-
-            # Bring up Docker Compose v2 (preferred on Amazon Linux)
+            # Always bring up Docker
             sudo docker compose -f docker-compose.staging.yml up --build -d
           "
