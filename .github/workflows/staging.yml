@@ -1,0 +1,70 @@
+name: CI/CD - FastAPI Staging
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  build:
+    name: 🛠️ Build & Test (Staging)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔐 Create .env (staging)
+        run: |
+          echo "POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.STAGING_POSTGRES_DB }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.STAGING_POSTGRES_PORT }}" >> .env
+          echo "POSTGRES_HOST=${{ secrets.STAGING_POSTGRES_HOST }}" >> .env
+          echo "JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}" >> .env
+          echo "JWT_EXPIRATION_SECONDS=${{ secrets.STAGING_JWT_EXPIRATION_SECONDS }}" >> .env
+          echo "EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}" >> .env
+          echo "TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}" >> .env
+          echo "USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}" >> .env
+      - name: 🐳 Build & Run Tests
+        run: |
+          docker-compose -f docker-compose.staging.yml up --build -d
+          sleep 10
+          curl --fail http://localhost:8001 || (echo "❌ Staging FastAPI failed to start" && exit 1)
+          docker-compose -f docker-compose.staging.yml down
+
+  deploy:
+    name: 🚀 Deploy to EC2 (Staging)
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔑 Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🚀 Deploy to Staging
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            mkdir -p /home/ec2-user/staging &&
+            cd /home/ec2-user/staging &&
+            git pull || git clone https://github.com/Ahmed0Raza/Task-backend.git . &&
+            git checkout staging &&
+            echo "POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}" >> .env
+            echo "POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}" >> .env
+            echo "POSTGRES_DB=${{ secrets.STAGING_POSTGRES_DB }}" >> .env
+            echo "POSTGRES_PORT=${{ secrets.STAGING_POSTGRES_PORT }}" >> .env
+            echo "POSTGRES_HOST=${{ secrets.STAGING_POSTGRES_HOST }}" >> .env
+            echo "JWT_SECRET=${{ secrets.STAGING_JWT_SECRET }}" >> .env
+            echo "JWT_EXPIRATION_SECONDS=${{ secrets.STAGING_JWT_EXPIRATION_SECONDS }}" >> .env
+            echo "EMAIL_GIT=${{ secrets.STAGING_EMAIL_GIT }}" >> .env
+            echo "TOKEN_GITHUB=${{ secrets.STAGING_TOKEN_GITHUB }}" >> .env
+            echo "USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}" >> .env &&
+            sudo docker-compose -f docker-compose.staging.yml up --build -d
+          "

@@ -1,0 +1,71 @@
+name: CI/CD - FastAPI Production
+
+on:
+  push:
+    branches:
+      - production
+
+jobs:
+  build:
+    name: 🛠️ Build & Test (Production)
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔐 Create .env (production)
+        run: |
+          echo "POSTGRES_USER=${{ secrets.PROD_POSTGRES_USER }}" >> .env
+          echo "POSTGRES_PASSWORD=${{ secrets.PROD_POSTGRES_PASSWORD }}" >> .env
+          echo "POSTGRES_DB=${{ secrets.PROD_POSTGRES_DB }}" >> .env
+          echo "POSTGRES_PORT=${{ secrets.PROD_POSTGRES_PORT }}" >> .env
+          echo "POSTGRES_HOST=${{ secrets.PROD_POSTGRES_HOST }}" >> .env
+          echo "JWT_SECRET=${{ secrets.PROD_JWT_SECRET }}" >> .env
+          echo "JWT_EXPIRATION_SECONDS=${{ secrets.PROD_JWT_EXPIRATION_SECONDS }}" >> .env
+          echo "EMAIL_GIT=${{ secrets.PROD_EMAIL_GIT }}" >> .env
+          echo "TOKEN_GITHUB=${{ secrets.PROD_TOKEN_GITHUB }}" >> .env
+          echo "USERNAME_GITHUB=${{ secrets.PROD_USERNAME_GITHUB }}" >> .env
+          
+      - name: 🐳 Build & Run Tests
+        run: |
+          docker-compose -f docker-compose.prod.yml up --build -d
+          sleep 10
+          curl --fail http://localhost:8000 || (echo "❌ Production FastAPI failed to start" && exit 1)
+          docker-compose -f docker-compose.prod.yml down
+
+  deploy:
+    name: 🚀 Deploy to EC2 (Production)
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🔑 Setup SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_SSH_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 🚀 Deploy to Production
+        run: |
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
+            mkdir -p /home/ec2-user/production &&
+            cd /home/ec2-user/production &&
+            git pull || git clone https://github.com/Ahmed0Raza/Task-backend.git . &&
+            git checkout production &&
+            echo "POSTGRES_USER=${{ secrets.POSTGRES_USER }}" >> .env
+            echo "POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> .env
+            echo "POSTGRES_DB=${{ secrets.POSTGRES_DB }}" >> .env
+            echo "POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}" >> .env
+            echo "POSTGRES_HOST=${{ secrets.POSTGRES_HOST }}" >> .env
+            echo "JWT_SECRET=${{ secrets.JWT_SECRET }}" >> .env
+            echo "JWT_EXPIRATION_SECONDS=${{ secrets.JWT_EXPIRATION_SECONDS }}" >> .env
+            echo "EMAIL_GIT=${{ secrets.EMAIL_GIT }}" >> .env
+            echo "TOKEN_GITHUB=${{ secrets.TOKEN_GITHUB }}" >> .env
+            echo "USERNAME_GITHUB=${{ secrets.USERNAME_GITHUB }}" >> .env &&
+            sudo docker-compose -f docker-compose.prod.yml up --build -d
+          "

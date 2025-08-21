@@ -1,14 +1,16 @@
+version: "3.9"
+
 services:
   db:
     image: postgres:15
-    container_name: postgres-db
+    container_name: staging-postgres-db
     restart: always
     env_file:
       - .env
     ports:
-      - "3000:5432"
+      - "5433:5432"  # Staging DB runs on 5433
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - staging-postgres-data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
       interval: 5s
@@ -17,9 +19,9 @@ services:
 
   backend:
     build: .
-    container_name: fastapi-backend
+    container_name: staging-fastapi-backend
     ports:
-      - "8000:8000"
+      - "8001:8000"  # Staging API runs on 8001
     env_file:
       - .env
     depends_on:
@@ -30,18 +32,18 @@ services:
   backup:
     build:
       context: ./backupSystem
-    container_name: backup
+    container_name: staging-backup
     depends_on:
       - backend
     env_file:
       - .env
     volumes:
-      - postgres-data:/data:ro 
+      - staging-postgres-data:/data:ro 
       - ./backupSystem/backups:/app/backups
       - ./backupSystem/logs:/app/logs
       - ./backupSystem/reports:/app/reports
     command: ["sh", "-c", "./search_backup.sh -d /data -b -i -r && crond -f -l 8"]
-    user: "0:0"  # Run as root to avoid permission issues
+    user: "0:0"
 
 volumes:
-  postgres-data:
+  staging-postgres-data:

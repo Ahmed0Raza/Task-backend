@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: prod-postgres-db
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"  # Prod DB exposed on default Postgres port
+    volumes:
+      - prod-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: .
+    container_name: prod-fastapi-backend
+    ports:
+      - "8000:8000"  # Prod API runs on 8000
+    env_file:
+      - .env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"
+
+  backup:
+    build:
+      context: ./backupSystem
+    container_name: prod-backup
+    depends_on:
+      - backend
+    env_file:
+      - .env
+    volumes:
+      - prod-postgres-data:/data:ro 
+      - ./backupSystem/backups:/app/backups
+      - ./backupSystem/logs:/app/logs
+      - ./backupSystem/reports:/app/reports
+    command: ["sh", "-c", "./search_backup.sh -d /data -b -i -r && crond -f -l 8"]
+    user: "0:0"
+
+volumes:
+  prod-postgres-data:
