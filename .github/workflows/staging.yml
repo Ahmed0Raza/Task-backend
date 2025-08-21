@@ -94,5 +94,5 @@ jobs:
             fi
 
             # Always bring up Docker
-            sudo docker compose -f docker-compose.staging.yml up --build -d
+            sudo docker-compose -f docker-compose.staging.yml up --build -d
           ENDSSH
