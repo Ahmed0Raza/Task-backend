@@ -8,7 +8,11 @@ db_connection()
 
 @app.get("/")
 def read_root():
-    return {"message": " Testing : Container is running successfully!"}
+    return {"message": " Staging : Container is running successfully !"}
+
+@app.get("/newapijustinstaging")
+def read_root():
+    return {"message": " Staging : Container is running successfully !"}
 
 
 app.include_router(auth_router, prefix="/auth")
