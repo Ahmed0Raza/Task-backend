@@ -36,6 +36,13 @@ jobs:
           sleep 10
           curl --fail http://localhost:8001 || (echo "❌ Staging FastAPI failed to start" && exit 1)
           docker-compose -f docker-compose.staging.yml down
+      - name: 📜 Show Logs (on failure)
+        if: failure()
+        run: |
+          echo "======= BACKEND LOGS ======="
+          docker-compose -f docker-compose.staging.yml logs backend || true
+          echo "======= DB LOGS ======="
+          docker-compose -f docker-compose.staging.yml logs db || true
 
   deploy:
     name: 🚀 Deploy to EC2 (Staging)
