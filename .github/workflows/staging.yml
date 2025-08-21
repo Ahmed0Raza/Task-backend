@@ -33,7 +33,7 @@ jobs:
       - name: 🐳 Build & Run Tests
         run: |
           docker-compose -f docker-compose.staging.yml up --build -d
-          sleep 30
+          sleep 10
           curl --fail http://localhost:8001 || (echo "❌ Staging FastAPI failed to start" && exit 1)
           docker-compose -f docker-compose.staging.yml down
       - name: 📜 Show Logs (on failure)
@@ -65,19 +65,19 @@ jobs:
           ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} "
             set -e
 
-            # Ensure staging folder exists
-            mkdir -p /home/ec2-user/staging
-            cd /home/ec2-user/staging
-
-            # If repo exists, pull; otherwise clone fresh
-            if [ -d .git ]; then
+            # Clean deploy folder if not a git repo
+            if [ ! -d /home/ec2-user/staging/.git ]; then
+              rm -rf /home/ec2-user/staging
+              git clone -b staging https://github.com/Ahmed0Raza/Task-backend.git /home/ec2-user/staging
+            else
+              cd /home/ec2-user/staging
               git fetch origin
               git reset --hard origin/staging
-            else
-              git clone -b staging https://github.com/Ahmed0Raza/Task-backend.git .
             fi
 
-            # Write .env fresh each time
+            cd /home/ec2-user/staging
+
+            # Recreate .env from secrets
             cat > .env <<EOF
             POSTGRES_USER=${{ secrets.STAGING_POSTGRES_USER }}
             POSTGRES_PASSWORD=${{ secrets.STAGING_POSTGRES_PASSWORD }}
@@ -91,6 +91,6 @@ jobs:
             USERNAME_GITHUB=${{ secrets.STAGING_USERNAME_GITHUB }}
             EOF
 
-            # Bring up Docker with Compose v2 (preferred)
+            # Bring up Docker Compose v2 (preferred on Amazon Linux)
             sudo docker compose -f docker-compose.staging.yml up --build -d
           "
