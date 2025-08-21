@@ -10,7 +10,7 @@ db_connection()
 def read_root():
     return {"message": " Staging : Container is running successfully !"}
 
-@app.get("/newapijustinstaging")
+@app.post("/newapijustinstaging")
 def read_root():
     return {"message": " Staging : Container is running successfully !"}
 
