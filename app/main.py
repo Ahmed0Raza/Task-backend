@@ -14,6 +14,10 @@ def read_root():
 def read_root():
     return {"message": " Staging : new api added from staging #1 !"}
 
+@app.post("/newapijustinstaging")
+def read_root():
+    return {"message": " Staging : new api added from staging #2 !"}
+
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(task_router, prefix="/task")
