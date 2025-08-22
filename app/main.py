@@ -12,7 +12,7 @@ def read_root():
 
 @app.post("/newapijustinstaging")
 def read_root():
-    return {"message": " Staging : Container is running successfully !"}
+    return {"message": " Staging : new api added from staging #1 !"}
 
 
 app.include_router(auth_router, prefix="/auth")
