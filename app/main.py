@@ -14,7 +14,7 @@ def read_root():
 def read_root():
     return {"message": " Staging : new api added from staging #1 !"}
 
-@app.post("/newapijustinstaging")
+@app.post("/testapijustinstaging")
 def read_root():
     return {"message": " Staging : new api added from staging #2 !"}
 
