@@ -8,16 +8,7 @@ db_connection()
 
 @app.get("/")
 def read_root():
-    return {"message": " Staging : Container is running successfully !"}
-
-@app.post("/newapijustinstaging")
-def read_root():
-    return {"message": " Staging : new api added from staging #1 !"}
-
-@app.post("/testapijustinstaging")
-def read_root():
-    return {"message": " Staging : new api added from staging #2 !"}
-
+    return {"message": " Production : Container is running successfully !"}
 
 app.include_router(auth_router, prefix="/auth")
 app.include_router(task_router, prefix="/task")
