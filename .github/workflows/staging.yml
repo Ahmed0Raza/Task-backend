@@ -65,8 +65,7 @@ jobs:
 
       - name: 🚀 Deploy to Staging
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no \
-           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
             set -e
 
             if [ -d /home/ec2-user/staging/.git ]; then
