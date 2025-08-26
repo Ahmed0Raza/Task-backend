@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - staging
-#comment
+
 jobs:
   build:
     name: 🛠️ Build & Test (Staging)
@@ -65,7 +65,7 @@ jobs:
 
       - name: 🚀 Deploy to Staging
         run: |
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'ENDSSH'
             set -e
 
             if [ -d /home/ec2-user/staging/.git ]; then
